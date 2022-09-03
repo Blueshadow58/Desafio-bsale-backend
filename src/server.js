@@ -10,4 +10,4 @@ app.use(express.urlencoded({ extended: true }));
 app.use(productsRouter);
 app.use(categoriesRouter);
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port);
