@@ -34,3 +34,22 @@ exports.product = (req, res) => {
     }
   });
 };
+
+exports.search = (req, res) => {
+  const { name } = req.body;
+  const productName = name.toUpperCase();
+  const searchProducts = `SELECT * FROM product WHERE name LIKE "${productName}%"`;
+
+  pool.getConnection((err, connection) => {
+    if (err) {
+      res.send(err);
+    } else {
+      connection.query(searchProducts, (err, products) => {
+        if (!err) {
+          res.send(products);
+        }
+        connection.release();
+      });
+    }
+  });
+};
