@@ -4,9 +4,9 @@
 Api funcional en heroku: https://desafio-bsale-api-heroku.herokuapp.com/
 
 
-## Instalacion
+## Instalación
 
-Install my-project with npm
+Instalación del proyecto
 
 ```bash
   git clone https://github.com/Blueshadow58/Desafio-bsale-backend.git
@@ -25,7 +25,7 @@ Install my-project with npm
 - Rapid Api (extension)
 - Heroku
 
-## API Reference
+## API Referencia
 
 #### Get Productos
 
