@@ -22,9 +22,8 @@ exports.product = (req, res) => {
 };
 
 exports.search = (req, res) => {
-  const { name } = req.body;
-  const productName = name.toUpperCase();
-  const searchProducts = `SELECT * FROM product WHERE name LIKE "${productName}%"`;
+  const productName = JSON.parse(JSON.stringify(req.body.name));
+  const searchProducts = `SELECT * FROM product WHERE name LIKE '${productName}%' OR category LIKE '${productName}'`;
 
   pool.query(searchProducts, (err, products) => {
     if (!err) {
