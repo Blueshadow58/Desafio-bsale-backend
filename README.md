@@ -19,9 +19,6 @@ Instalación del proyecto
 
 - Visual Studio Code
 - Node.js + Express
-- Vanilla JS
-- Bootstrap
-- Html5
 - Rapid Api (extension)
 - Heroku
 
