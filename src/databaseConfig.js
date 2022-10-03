@@ -1,5 +1,6 @@
 const mysql = require("mysql");
 
+// defining the db configuration
 const pool = mysql.createPool({
   connectionLimit: 10,
   host: "mdb-test.c6vunyturrl6.us-west-1.rds.amazonaws.com",

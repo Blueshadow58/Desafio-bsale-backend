@@ -2,6 +2,7 @@ const express = require("express");
 const categoriesRouter = express.Router();
 const categoriesController = require("../Controllers/categoriesController");
 
-categoriesRouter.get("/categories", categoriesController.index);
+// return a json list with all the categories
+categoriesRouter.get("/", categoriesController.index);
 
 module.exports = categoriesRouter;
