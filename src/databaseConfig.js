@@ -8,5 +8,8 @@ const pool = mysql.createPool({
   password: "bsale_test",
   database: "bsale_test",
 });
+con.on("error", function (err) {
+  console.log("[mysql error]", err);
+});
 
 module.exports = pool;
