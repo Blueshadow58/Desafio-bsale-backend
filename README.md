@@ -1,7 +1,7 @@
 
 # API - Desafio Backend bsale
 
-Api funcional en heroku: https://desafio-bsale-api-heroku.herokuapp.com/
+Api funcional en heroku: https://desafio-bsale-api-heroku.herokuapp.com/api/products
 
 
 ## Instalación
