@@ -6,13 +6,18 @@ exports.index = (req, res) => {
 
   if (req.query.page || req.query.page) {
     // let productsLength = 0;
-    const page = parseInt(req.query.page) === 1 ? 0 : parseInt(req.query.page);
+
     const limit = parseInt(req.query.limit);
+    const page = parseInt(req.query.page);
     // def pagination controlls
-    const startIndex = (page - 1) * limit;
+    const startIndex =
+      parseInt(req.query.page) === 1
+        ? 0
+        : (parseInt(req.query.page) - 1) * limit;
     const endIndex = page * limit;
+
     // def query get all from products
-    getProducts = `SELECT * FROM product ORDER BY id ASC LIMIT ${limit} OFFSET ${page}`;
+    getProducts = `SELECT * FROM product ORDER BY id ASC LIMIT ${limit} OFFSET ${startIndex}`;
     const getCount = `SELECT COUNT(*) as count FROM product USE INDEX(PRIMARY)`;
 
     // get lenght of products table
@@ -42,6 +47,7 @@ exports.index = (req, res) => {
         };
       }
     };
+
     // execuste fucntion paginate then send the data
     paginate().then(() => sendData());
   } else {
