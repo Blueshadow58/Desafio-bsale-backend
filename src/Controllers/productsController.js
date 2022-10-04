@@ -14,7 +14,7 @@ exports.index = (req, res) => {
       parseInt(req.query.page) === 1
         ? 0
         : (parseInt(req.query.page) - 1) * limit;
-    const endIndex = page * limit;
+    const endIndex = (page + 1) * limit;
 
     // def query get all from products
     getProducts = `SELECT * FROM product ORDER BY id ASC LIMIT ${limit} OFFSET ${startIndex}`;
