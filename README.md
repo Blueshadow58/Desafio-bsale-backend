@@ -24,39 +24,145 @@ Instalación del proyecto
 
 ## API Referencia
 
-#### Get Productos
+#### **GET** |  Productos
 
-```http
-  GET /
+- Tipo de dato / data type
 ```
-Retorna todos los productos de la base de datos
-
-#### Get producto por id
-
-```http
-  GET /api/product/${id}
+  [
+    {
+      "id": int,
+      "name": string,
+      "url_image": string,
+      "price": int,
+      "discount": int,
+      "category": int
+    }
+  ]
 ```
+
+- URL: /api/products
+
+Retorna una lista de productos: 
+```
+  [
+    {
+      "id": 25,
+      "name": "RON ABUELO",
+      "url_image": "https://dojiw2m9tvv09.cloudfront.net/11132/product/abuelo9475.jpg",
+      "price": 3990,
+      "discount": 0,
+      "category": 3
+    },
+    {
+      "id": 26,
+      "name": "RON BARCELO AÑEJO",
+      "url_image": "https://dojiw2m9tvv09.cloudfront.net/11132/product/barceloanejo9553.jpg",
+      "price": 4990,
+      "discount": 0,
+      "category": 3
+    },
+    ...
+  ]
+```
+
+- **Paginación URL :** 
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `page`      | `int` | **Required**. numero de pagina (cada pagina contiene de la cantidad del limite) |
+| `limit`      | `int` | **Required**. cantidad maxima de productos |
+
+```
+api/products?page=1&limit=10
+```
+
+
+#### **GET** | Producto por id
+
+
+
+- URL: /api/products/${id}
+
 
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `id`      | `int` | **Required**. Id requerido para la consulta |
 
-#### Get producto(s) buscador
+Retorna el producto con el id ingresado: ej: /api/products/25
 
-```http
-  POST /product
 ```
+ [
+    {
+      "id": 25,
+      "name": "RON ABUELO",
+      "url_image": "https://dojiw2m9tvv09.cloudfront.net/11132/product/abuelo9475.jpg",
+      "price": 3990,
+      "discount": 0,
+      "category": 3
+    },        
+  ]
+
+```
+
+#### **POST** | Producto(s) buscador
+
+- URL: /api/products
 
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `name`      | `string` | **Required**. Nombre requerido para la consulta |
 
-Retorna los productos que comienzen con dicho string (like query)
+Retorna los productos que comienzen con dicho string: ej: energe
 
-#### Get categorias 
-
-```http
-  GET /categories
+```
+  [
+    {
+      "id": 5,
+      "name": "ENERGETICA MR BIG",
+      "url_image": "https://dojiw2m9tvv09.cloudfront.net/11132/product/misterbig3308256.jpg",
+      "price": 1490,
+      "discount": 20,
+      "category": 1
+    },
+    {
+      "id": 6,
+      "name": "ENERGETICA RED BULL",
+      "url_image": "https://dojiw2m9tvv09.cloudfront.net/11132/product/redbull8381.jpg",
+      "price": 1490,
+      "discount": 0,
+      "category": 1
+    },
+    ...
+  ]
 ```
 
-Retorna todas las categorias 
+
+#### **GET** | Categorias 
+
+- Tipo de dato / data type
+```
+  [
+    {
+      "id": int,
+      "name": string
+    }    
+  ]
+```
+- URL: /api/categories
+
+Retorna todas las categorias
+
+```
+  [
+    {
+      "id": 1,
+      "name": "bebida energetica"
+    },
+    {
+      "id": 2,
+      "name": "pisco"
+    },
+    ...
+  ]
+
+```
