@@ -1,43 +1,55 @@
 const pool = require("../databaseConfig");
 
 exports.index = (req, res) => {
-  // let productsLength = 0;
-  const page = parseInt(req.query.page) === 1 ? 0 : parseInt(req.query.page);
-  const limit = parseInt(req.query.limit);
-  // def pagination controlls
-  const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
-  // def query get all from products
-  const getProducts = `SELECT * FROM product ORDER BY id ASC LIMIT ${limit} OFFSET ${page}`;
-  const getCount = `SELECT COUNT(*) as count FROM product USE INDEX(PRIMARY)`;
+  let getProducts;
   let results = {};
 
-  // get lenght of products table
-  const lengthProducts = new Promise((resolve, reject) => {
-    pool.query(getCount, (err, data) => {
-      if (err) {
-        throw new Error(err);
-      }
-      length = data[0].count;
-      resolve(length);
-    });
-  });
+  if (req.query.page || req.query.page) {
+    // let productsLength = 0;
+    const page = parseInt(req.query.page) === 1 ? 0 : parseInt(req.query.page);
+    const limit = parseInt(req.query.limit);
+    // def pagination controlls
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    // def query get all from products
+    getProducts = `SELECT * FROM product ORDER BY id ASC LIMIT ${limit} OFFSET ${page}`;
+    const getCount = `SELECT COUNT(*) as count FROM product USE INDEX(PRIMARY)`;
 
-  const paginate = async () => {
-    // next page
-    if (endIndex < (await lengthProducts)) {
-      results.next = {
-        page: page + 1,
-        limit: limit,
-      };
-    }
-    // previous page
-    if (startIndex > 0) {
-      results.previous = {
-        page: page - 1,
-        limit: limit,
-      };
-    }
+    // get lenght of products table
+    const lengthProducts = new Promise((resolve, reject) => {
+      pool.query(getCount, (err, data) => {
+        if (err) {
+          throw new Error(err);
+        }
+        length = data[0].count;
+        resolve(length);
+      });
+    });
+
+    const paginate = async () => {
+      // next page
+      if (endIndex < (await lengthProducts)) {
+        results.next = {
+          page: page + 1,
+          limit: limit,
+        };
+      }
+      // previous page
+      if (startIndex > 0) {
+        results.previous = {
+          page: page - 1,
+          limit: limit,
+        };
+      }
+    };
+    // execuste fucntion paginate then send the data
+    paginate().then(() => sendData());
+  } else {
+    getProducts = `SELECT * FROM product`;
+    sendData();
+  }
+
+  async function sendData() {
     //get paginated products
     await pool.query(getProducts, (err, products) => {
       if (err) {
@@ -46,8 +58,7 @@ exports.index = (req, res) => {
       results.results = products;
       res.send(results);
     });
-  };
-  paginate();
+  }
 };
 
 exports.product = (req, res) => {
