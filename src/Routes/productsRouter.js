@@ -7,6 +7,8 @@ productsRouter.get("/", productsController.index);
 // return the product by the id of the product
 productsRouter.get("/:id", productsController.product);
 // return a list or a product that are similar by the name sended
-productsRouter.post("/", productsController.search);
+productsRouter.post("/", productsController.searchByName);
+
+productsRouter.post("/category", productsController.searchByCategory);
 
 module.exports = productsRouter;

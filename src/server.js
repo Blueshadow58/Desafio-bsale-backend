@@ -14,4 +14,13 @@ app.use(cors());
 app.use("/api/products/", productsRouter);
 app.use("/api/categories/", categoriesRouter);
 
-app.listen(port);
+//Default redirect to api/products
+app.get("/*", function (req, res) {
+  res.redirect("/api/products");
+});
+
+app
+  .listen(port, console.log(`Escuchando puerto ${port}`))
+  .on("error", function (err) {
+    console.log(err);
+  });

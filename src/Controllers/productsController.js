@@ -5,15 +5,13 @@ exports.index = (req, res) => {
   let results = {};
 
   if (req.query.page || req.query.page) {
-    // let productsLength = 0;
-
+    // Get query params limit and page
     const limit = parseInt(req.query.limit);
     const page = parseInt(req.query.page);
-    // def pagination controlls
-    const startIndex =
-      parseInt(req.query.page) === 1
-        ? 0
-        : (parseInt(req.query.page) - 1) * limit;
+
+    // def start index
+    const startIndex = page === 1 ? 0 : (page - 1) * limit;
+    // def end index
     const endIndex = (page + 1) * limit;
 
     // def query get all from products
@@ -51,6 +49,7 @@ exports.index = (req, res) => {
     // execuste fucntion paginate then send the data
     paginate().then(() => sendData());
   } else {
+    // if limit and page its not provided then show all products
     getProducts = `SELECT * FROM product`;
     sendData();
   }
@@ -58,11 +57,12 @@ exports.index = (req, res) => {
   async function sendData() {
     //get paginated products
     await pool.query(getProducts, (err, products) => {
-      if (err) {
-        throw new Error(err);
+      if (!err) {
+        results.results = products;
+        res.send(results);
+      } else {
+        console.error(err);
       }
-      results.results = products;
-      res.send(results);
     });
   }
 };
@@ -76,18 +76,37 @@ exports.product = (req, res) => {
   pool.query(getProductById, (err, products) => {
     if (!err) {
       res.send(products);
+    } else {
+      console.error(err);
     }
   });
 };
 
-exports.search = (req, res) => {
+exports.searchByName = (req, res) => {
+  let searchProducts;
   // get product name from input
-  const productName = JSON.parse(JSON.stringify(req.body.name));
+  const productName = req.body.name;
   // get products by name if they are similar with the name from the input
-  const searchProducts = `SELECT * FROM product WHERE name LIKE '%${productName}%' OR category LIKE '${productName}'`;
+  searchProducts = `SELECT * FROM product WHERE name LIKE '%${productName}%' `;
   pool.query(searchProducts, (err, products) => {
     if (!err) {
       res.send(products);
+    } else {
+      console.error(err);
+    }
+  });
+};
+
+exports.searchByCategory = (req, res) => {
+  // get products by category id
+  const categoryId = JSON.parse(JSON.stringify(req.body.id));
+  // get products by category if the request id is equal to the category id
+  const searchProducts = `SELECT * FROM product WHERE category = '${categoryId}'`;
+  pool.query(searchProducts, (err, products) => {
+    if (!err) {
+      res.send(products);
+    } else {
+      console.error(err);
     }
   });
 };
