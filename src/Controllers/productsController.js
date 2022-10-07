@@ -84,7 +84,7 @@ exports.search = (req, res) => {
   // get product name from input
   const productName = JSON.parse(JSON.stringify(req.body.name));
   // get products by name if they are similar with the name from the input
-  const searchProducts = `SELECT * FROM product WHERE name LIKE '${productName}%' OR category LIKE '${productName}'`;
+  const searchProducts = `SELECT * FROM product WHERE name LIKE '%${productName}%' OR category LIKE '${productName}'`;
   pool.query(searchProducts, (err, products) => {
     if (!err) {
       res.send(products);
